@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>2GIS Route Collector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">
+        2GIS Route Collector
+      </h2>
+      <div class="flex items-center mb-4">
+        <label for="city" class="text-gray-700 mr-2">Город:</label>
+        <input
+          type="text"
+          id="city"
+          placeholder="Введите город, например, samarkand"
+          class="border border-gray-300 rounded-md p-2 w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+      </div>
+      <div class="flex space-x-4 mb-4">
+        <button
+          onclick="startCollection()"
+          class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+        >
+          Start
+        </button>
+        <button
+          onclick="stopCollection()"
+          class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+        >
+          Stop
+        </button>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-700 mb-2">Логи:</h3>
+      <textarea
+        id="log"
+        readonly
+        class="w-full h-96 bg-gray-800 text-white p-4 rounded-md font-mono text-sm resize-none focus:outline-none"
+      ></textarea>
+    </div>
+
+    <script>
+      const { ipcRenderer } = require("electron");
+
+      function startCollection() {
+        const city = document.getElementById("city").value;
+        document.getElementById("log").value = "";
+        ipcRenderer.send("start-collection", city);
+      }
+
+      function stopCollection() {
+        ipcRenderer.send("stop-collection");
+      }
+
+      ipcRenderer.on("log", (event, message) => {
+        const logArea = document.getElementById("log");
+        logArea.value += message + "\n";
+        logArea.scrollTop = logArea.scrollHeight;
+      });
+    </script>
+  </body>
+</html>
