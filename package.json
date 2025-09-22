@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "pkg . --out-path dist"
+    "build": "pkg . --out-path dist",
+    "dist": "electron-builder"
   },
   "pkg": {
     "assets": [
@@ -16,13 +17,22 @@
     ],
     "outputPath": "dist"
   },
+  "build": {
+    "appId": "com.mycompany.myapp",
+    "win": {
+      "target": "nsis"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "electron": "^33.0.2",
-    "pkg": "^5.8.1",
     "puppeteer": "^24.22.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1",
+    "electron": "^33.0.2",
+    "electron-builder": "^26.0.12"
   }
 }
